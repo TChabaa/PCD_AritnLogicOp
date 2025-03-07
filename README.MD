@@ -1,0 +1,1 @@
+GUI masih mock up, buat file satu per operasi
