@@ -4,6 +4,8 @@ import cv2
 from not_logic import not_operation
 from PIL import Image, ImageTk
 from addition_arit import addition_operation
+from and_logic import and_operation
+from subtraction_arit import subtraction_operation
 
 class ImageProcessorApp:
     def __init__(self, root):
@@ -89,6 +91,22 @@ class ImageProcessorApp:
             img_tk = self.cv_to_tk(result_array)  # Convert for Tkinter
             self.result_label.config(image=img_tk)
             self.result_label.image = img_tk
+            
+    def apply_and(self):
+        if self.image_path1 and self.image_path2:
+            result_array = and_operation(self.image_path1, self.image_path2)
+            result_array = cv2.resize(result_array, (150, 150))
+            img_tk = self.cv_to_tk(result_array)
+            self.result_label.config(image=img_tk)
+            self.result_label.image = img_tk
+
+    def apply_subtraction(self):
+        if self.image_path1 and self.image_path2:
+            result_array = subtraction_operation(self.image_path1, self.image_path2)
+            result_array = cv2.resize(result_array, (150, 150))
+            img_tk = self.cv_to_tk(result_array)
+            self.result_label.config(image=img_tk)
+            self.result_label.image = img_tk
 
     def create_buttons(self, frame):
         button_frame = tk.Frame(frame)
@@ -103,7 +121,7 @@ class ImageProcessorApp:
         or_btn = tk.Button(button_frame, text="OR", width=10, bg="lightgray", fg="black", command=self.mock_operation)
         or_btn.grid(row=2, column=0, pady=3)
 
-        and_btn = tk.Button(button_frame, text="AND", width=10, bg="lightgray", fg="black", command=self.mock_operation)
+        and_btn = tk.Button(button_frame, text="AND", width=10, bg="lightgray", fg="black", command=self.apply_and)
         and_btn.grid(row=3, column=0, pady=3)
 
         xor_btn = tk.Button(button_frame, text="XOR", width=10, bg="lightgray", fg="black", command=self.mock_operation)
@@ -116,7 +134,7 @@ class ImageProcessorApp:
         add_btn = tk.Button(arithmetic_frame, text="+", width=10, bg="lightgray", fg="black", command=self.apply_addition)
         add_btn.grid(row=0, column=0, pady=3)
 
-        subtract_btn = tk.Button(arithmetic_frame, text="-", width=10, bg="lightgray", fg="black", command=self.mock_operation)
+        subtract_btn = tk.Button(arithmetic_frame, text="-", width=10, bg="lightgray", fg="black", command=self.apply_subtraction)
         subtract_btn.grid(row=1, column=0, pady=3)
 
         multiply_btn = tk.Button(arithmetic_frame, text="x", width=10, bg="lightgray", fg="black", command=self.mock_operation)
