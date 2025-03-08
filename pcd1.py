@@ -6,6 +6,8 @@ from PIL import Image, ImageTk
 from addition_arit import addition_operation
 from and_logic import and_operation
 from subtraction_arit import subtraction_operation
+from or_logic import or_operation
+from multiplication_arit import multiplication_operation
 
 class ImageProcessorApp:
     def __init__(self, root):
@@ -43,26 +45,23 @@ class ImageProcessorApp:
         self.image_path1 = None
         self.image_path2 = None
 
-    
-    from PIL import Image, ImageTk  # Ensure PIL is imported
-
     def cv_to_tk(self, cv_image):
         """Convert OpenCV image to Tkinter PhotoImage"""
-        image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)  # Convert to RGB
-        image_pil = Image.fromarray(image_rgb)  # Convert to PIL image
-        return ImageTk.PhotoImage(image_pil)  # Convert to Tkinter-compatible image
+        image_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)  
+        image_pil = Image.fromarray(image_rgb) 
+        return ImageTk.PhotoImage(image_pil) 
    
     def upload_image(self, img_num):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
         if file_path:
-            image = cv2.imread(file_path)  # Read image using OpenCV
-            image = cv2.resize(image, (150, 150))  # Resize to fit GUI
-            img_tk = self.cv_to_tk(image)  # Convert to Tkinter-compatible format
+            image = cv2.imread(file_path) 
+            image = cv2.resize(image, (150, 150))  
+            img_tk = self.cv_to_tk(image) 
 
             if img_num == 1:
                 self.image_path1 = file_path
-                self.img_label1.config(image=img_tk, text="")  # Remove text when image is loaded
-                self.img_label1.image = img_tk  # Keep a reference
+                self.img_label1.config(image=img_tk, text="")  
+                self.img_label1.image = img_tk 
             else:
                 self.image_path2 = file_path
                 self.img_label2.config(image=img_tk, text="")
@@ -72,7 +71,7 @@ class ImageProcessorApp:
         if self.image_path1:
             result_array = not_operation(self.image_path1)
             result_array = cv2.resize(result_array, (150, 150))
-            img_tk = self.cv_to_tk(result_array)  # Convert for Tkinter
+            img_tk = self.cv_to_tk(result_array) 
             self.result_label.config(image=img_tk)
             self.result_label.image = img_tk
 
@@ -80,15 +79,23 @@ class ImageProcessorApp:
         if self.image_path2:
             result_array = not_operation(self.image_path2)
             result_array = cv2.resize(result_array, (150, 150))
-            img_tk = self.cv_to_tk(result_array)  # Convert for Tkinter
+            img_tk = self.cv_to_tk(result_array)  
             self.result_label.config(image=img_tk)
             self.result_label.image = img_tk
-            
+
+    def apply_or(self):
+        if self.image_path1 and self.image_path2:
+            result_array = or_operation(self.image_path1, self.image_path2) 
+            result_array = cv2.resize(result_array, (150, 150)) 
+            img_tk = self.cv_to_tk(result_array)  
+            self.result_label.config(image=img_tk)
+            self.result_label.image = img_tk        
+
     def apply_addition(self):
         if self.image_path1 and self.image_path2:
             result_array = addition_operation(self.image_path1, self.image_path2)
             result_array = cv2.resize(result_array, (150, 150))
-            img_tk = self.cv_to_tk(result_array)  # Convert for Tkinter
+            img_tk = self.cv_to_tk(result_array) 
             self.result_label.config(image=img_tk)
             self.result_label.image = img_tk
             
@@ -107,6 +114,14 @@ class ImageProcessorApp:
             img_tk = self.cv_to_tk(result_array)
             self.result_label.config(image=img_tk)
             self.result_label.image = img_tk
+            
+    def apply_multiplication(self):
+        if self.image_path1 and self.image_path2:
+            result_array = multiplication_operation(self.image_path1, self.image_path2)
+            result_array = cv2.resize(result_array, (150, 150))
+            img_tk = self.cv_to_tk(result_array)
+            self.result_label.config(image=img_tk)
+            self.result_label.image = img_tk
 
     def create_buttons(self, frame):
         button_frame = tk.Frame(frame)
@@ -118,7 +133,7 @@ class ImageProcessorApp:
         not_b_btn = tk.Button(button_frame, text="NOT B", width=10, bg="lightgray", fg="black", command=self.apply_not_b)
         not_b_btn.grid(row=1, column=0, pady=3)
 
-        or_btn = tk.Button(button_frame, text="OR", width=10, bg="lightgray", fg="black", command=self.mock_operation)
+        or_btn = tk.Button(button_frame, text="OR", width=10, bg="lightgray", fg="black", command=self.apply_or)
         or_btn.grid(row=2, column=0, pady=3)
 
         and_btn = tk.Button(button_frame, text="AND", width=10, bg="lightgray", fg="black", command=self.apply_and)
@@ -137,10 +152,10 @@ class ImageProcessorApp:
         subtract_btn = tk.Button(arithmetic_frame, text="-", width=10, bg="lightgray", fg="black", command=self.apply_subtraction)
         subtract_btn.grid(row=1, column=0, pady=3)
 
-        multiply_btn = tk.Button(arithmetic_frame, text="x", width=10, bg="lightgray", fg="black", command=self.mock_operation)
+        multiply_btn = tk.Button(arithmetic_frame, text="x", width=10, bg="lightgray", fg="black", command=self.apply_multiplication)
         multiply_btn.grid(row=2, column=0, pady=3)
 
-        divide_btn = tk.Button(arithmetic_frame, text="÷", width=10, bg="lightgray", fg="black", command=self.mock_operation)
+        divide_btn = tk.Button(arithmetic_frame, text="รท", width=10, bg="lightgray", fg="black", command=self.mock_operation)
         divide_btn.grid(row=3, column=0, pady=3)
 
     def mock_operation(self):
