@@ -10,6 +10,7 @@ from or_logic import or_operation
 from multiplication_arit import multiplication_operation
 from division_arit import division_operation
 from xor_logic import xor_operation
+from andnot_logic import and_not_operation
 
 class ImageProcessorApp:
     def __init__(self, root):
@@ -140,6 +141,14 @@ class ImageProcessorApp:
             img_tk = self.cv_to_tk(result_array)  
             self.result_label.config(image=img_tk)
             self.result_label.image = img_tk
+            
+    def apply_and_not(self):
+        if self.image_path1 and self.image_path2:
+            result_array = and_not_operation(self.image_path1, self.image_path2)
+            result_array = cv2.resize(result_array, (215, 215))
+            img_tk = self.cv_to_tk(result_array)
+            self.result_label.config(image=img_tk)
+            self.result_label.image = img_tk
 
     def create_buttons(self, frame):
         button_frame = tk.Frame(frame)
@@ -159,6 +168,9 @@ class ImageProcessorApp:
 
         xor_btn = tk.Button(button_frame, text="XOR", width=10, bg="lightgray", fg="black", command=self.apply_xor)
         xor_btn.grid(row=4, column=0, pady=3)
+        
+        and_not_btn = tk.Button(button_frame, text="NAND", width=10, bg="lightgray", fg="black", command=self.apply_and_not)
+        and_not_btn.grid(row=5, column=0, pady=3)
 
     def create_arithmetic_buttons(self, frame):
         arithmetic_frame = tk.Frame(frame)
