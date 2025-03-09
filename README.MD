@@ -1,1 +1,1 @@
-GUI masih mock up, buat file satu per operasi
+Program Python untuk Melakukan Operasi Logika dan Aritmatika
